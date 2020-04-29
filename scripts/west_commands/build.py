@@ -262,7 +262,10 @@ class Build(Forceable):
                         'CMake cache has no CMAKE_HOME_DIRECTORY;',
                         'please give a source_dir')
         else:
-            source_dir = os.getcwd()
+            source_dir = config_get('source_dir', None)
+
+            if not source_dir:
+                source_dir = os.getcwd()
         return os.path.abspath(source_dir)
 
     def _sanity_check_source_dir(self):
