@@ -43,7 +43,7 @@ void z_impl_k_thread_abort(k_tid_t thread)
 			(void)z_swap_irqlock(key);
 			CODE_UNREACHABLE;
 		} else {
-			SCB->ICSR |= SCB_ICSR_PENDSVSET_Msk;
+			arch_set_pendsv();
 		}
 	}
 

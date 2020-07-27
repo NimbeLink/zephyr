@@ -12,6 +12,11 @@ extern void read_timer_start_of_swap(void);
 #endif
 extern const int _k_neg_eagain;
 
+void __attribute__((weak)) __weak arch_set_pendsv(void)
+{
+	SCB->ICSR |= SCB_ICSR_PENDSVSET_Msk;
+}
+
 /* The 'key' actually represents the BASEPRI register
  * prior to disabling interrupts via the BASEPRI mechanism.
  *
@@ -45,7 +50,7 @@ int arch_swap(unsigned int key)
 
 #if defined(CONFIG_CPU_CORTEX_M)
 	/* set pending bit to make sure we will take a PendSV exception */
-	SCB->ICSR |= SCB_ICSR_PENDSVSET_Msk;
+	arch_set_pendsv();
 
 	/* clear mask or enable all irqs to take a pendsv */
 	irq_unlock(0);
