@@ -87,9 +87,18 @@ SECTION_SUBSEC_FUNC(TEXT, _HandlerModeExit, z_arm_exc_exit)
 
 #if defined(CONFIG_CPU_CORTEX_M)
     /* context switch required, pend the PendSV exception */
-    ldr r1, =_SCS_ICSR
-    ldr r2, =_SCS_ICSR_PENDSV
-    str r2, [r1]
+#if defined(CONFIG_CPU_CORTEX_M)
+    push {r0, lr}
+    bl arch_set_pendsv
+#if defined(CONFIG_ARMV6_M_ARMV8_M_BASELINE)
+    pop {r0, r1}
+    mov lr, r1
+#else
+    pop {r0, lr}
+#endif /* CONFIG_ARMV6_M_ARMV8_M_BASELINE */
+#else
+    bl arch_set_pendsv
+#endif
 #elif defined(CONFIG_CPU_CORTEX_R)
     bl z_arm_pendsv
 #endif
