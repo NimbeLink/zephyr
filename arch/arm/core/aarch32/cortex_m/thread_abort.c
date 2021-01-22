@@ -41,7 +41,7 @@ void z_impl_k_thread_abort(k_tid_t thread)
 			 * situations where the isr check is true but there
 			 * is not an implicit scheduler invocation.
 			 */
-			SCB->ICSR |= SCB_ICSR_PENDSVSET_Msk;
+			arch_set_pendsv();
 		} else {
 			z_swap_unlocked();
 		}

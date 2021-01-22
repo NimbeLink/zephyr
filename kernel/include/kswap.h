@@ -145,6 +145,7 @@ static inline void z_swap_unlocked(void)
 #else /* !CONFIG_USE_SWITCH */
 
 extern int arch_swap(unsigned int key);
+extern void arch_set_pendsv(void);
 
 static inline int z_swap_irqlock(unsigned int key)
 {
