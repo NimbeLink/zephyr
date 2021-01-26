@@ -24,8 +24,7 @@ set_ifndef(ZEPHYR_SDK_INSTALL_DIR   $ENV{ZEPHYR_SDK_INSTALL_DIR} "")
 #    This means Zephyr SDK toolchain will not be used for compilation,
 #    but other supplementary host tools will be used.
 if(("zephyr" STREQUAL ${ZEPHYR_TOOLCHAIN_VARIANT}) OR
-   ((NOT DEFINED ZEPHYR_TOOLCHAIN_VARIANT) AND (${CMAKE_HOST_SYSTEM_NAME} STREQUAL Linux)) OR
-   (DEFINED ZEPHYR_SDK_INSTALL_DIR))
+   ((NOT DEFINED ZEPHYR_TOOLCHAIN_VARIANT) AND (${CMAKE_HOST_SYSTEM_NAME} STREQUAL Linux)))
 
   # No toolchain was specified, so inform user that we will be searching.
   if (NOT DEFINED ZEPHYR_SDK_INSTALL_DIR AND NOT DEFINED ZEPHYR_TOOLCHAIN_VARIANT)
