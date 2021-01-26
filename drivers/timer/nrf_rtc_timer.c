@@ -6,8 +6,10 @@
  */
 
 #include <soc.h>
+#if CONFIG_CLOCK_CONTROL
 #include <drivers/clock_control.h>
 #include <drivers/clock_control/nrf_clock_control.h>
+#endif
 #include <drivers/timer/system_timer.h>
 #include <sys_clock.h>
 #include <hal/nrf_rtc.h>
@@ -189,12 +191,14 @@ void rtc_nrf_isr(const void *arg)
 int z_clock_driver_init(const struct device *device)
 {
 	ARG_UNUSED(device);
+#if CONFIG_CLOCK_CONTROL
 	static const enum nrf_lfclk_start_mode mode =
 		IS_ENABLED(CONFIG_SYSTEM_CLOCK_NO_WAIT) ?
 			CLOCK_CONTROL_NRF_LF_START_NOWAIT :
 			(IS_ENABLED(CONFIG_SYSTEM_CLOCK_WAIT_FOR_AVAILABILITY) ?
 			CLOCK_CONTROL_NRF_LF_START_AVAILABLE :
 			CLOCK_CONTROL_NRF_LF_START_STABLE);
+#endif
 
 	/* TODO: replace with counter driver to access RTC */
 	nrf_rtc_prescaler_set(RTC, 0);
@@ -212,7 +216,9 @@ int z_clock_driver_init(const struct device *device)
 		set_comparator(counter() + CYC_PER_TICK);
 	}
 
+#if CONFIG_CLOCK_CONTROL
 	z_nrf_clock_control_lf_on(mode);
+#endif
 
 	return 0;
 }
